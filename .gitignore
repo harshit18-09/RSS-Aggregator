@@ -1,3 +1,5 @@
 RSS-Aggregator
 .env
 thunder-tests/
+.vscode/
+.DS_Store

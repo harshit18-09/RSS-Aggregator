@@ -18,7 +18,7 @@ func main() {
 
 	portString := os.Getenv("PORT")
 	if portString == "" {
-		log.Fatal("PORT is not found in the environment")
+		log.Fatal("PORT not in env")
 	}
 
 	router := chi.NewRouter()
