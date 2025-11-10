@@ -1,0 +1,8 @@
+version: "1"
+packages:
+  - name: "db"                     # Go package name
+    path: "internal/db"            # Output directory for generated code
+    engine: "postgresql"           # Database engine
+    schema:
+      - "sql/schema/001_users.sql" # Schema files
+    queries: "sql/queries"         # Queries folder or files
