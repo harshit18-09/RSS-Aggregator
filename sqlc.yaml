@@ -5,4 +5,5 @@ packages:
     engine: "postgresql"           # Database engine
     schema:
       - "sql/schema/001_users.sql" # Schema files
+      - "sql/schema/002_users_apikey.sql"
     queries: "sql/queries"         # Queries folder or files
