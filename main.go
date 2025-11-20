@@ -56,10 +56,7 @@ func main() {
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerErr)
 	v1Router.Post("/users", apiCfg.handlerCreateUser)
-	v1Router.With(apiCfg.MiddlewareAuth).Get("/users", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		user := r.Context().Value(userContextKey).(db.User)
-		apiCfg.handlerGetUser(w, r, user)
-	}))
+	v1Router.With(apiCfg.MiddlewareAuth).Get("/users", apiCfg.handlerGetUser)
 
 	router.Mount("/v1", v1Router)
 
