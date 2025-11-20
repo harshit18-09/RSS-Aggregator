@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	// "github.com/harshit18-09/RSS-Aggregator/internal/auth"
 	"github.com/harshit18-09/RSS-Aggregator/internal/db"
 )
 
@@ -33,6 +34,10 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	respondWithJSON(w, 201, databaseUserToUser(user))
+}
+
+func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user db.User) {
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
 
