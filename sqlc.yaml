@@ -9,4 +9,5 @@ packages:
       - "sql/schema/003_feeds.sql"
       - "sql/schema/004_feed_follows.sql"
       - "sql/schema/005_feeds_lastfetchedat.sql"
+      - "sql/schema/006_posts.sql"
     queries: "sql/queries"         # Queries folder or files

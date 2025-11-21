@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/harshit18-09/RSS-Aggregator/internal/db"
 )
 
@@ -45,7 +46,26 @@ func scrapeFeed(dbq *db.Queries, wg *sync.WaitGroup, feed db.Feed) {
 	}
 
 	for _, item := range rssFeed.Channel.Items {
-		log.Println("Processing item:", item.Title)
+		t, err := time.Parse(time.RFC1123Z, item.PubDate)
+		if err != nil {
+			t = time.Now()
+		}
+
+		_, err = dbq.CreatePost(context.Background(), db.CreatePostParams{
+			ID:          uuid.New(),
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+			FeedID:      uuid.NullUUID{UUID: feed.ID, Valid: true},
+			Title:       item.Title,
+			Url:         item.Link,
+			Description: item.Description,
+			PublishedAt: t,
+		})
+		if err != nil {
+			log.Println("Error inserting post into database:", err)
+			continue
+		}
 	}
+
 	log.Println("Finished scraping feed:", feed.Name)
 }
