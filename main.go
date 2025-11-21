@@ -82,6 +82,7 @@ func main() {
 		user := r.Context().Value(userContextKey).(db.User)
 		apiCfg.handlerDeleteFeedFollows(w, r, user)
 	})
+	v1Router.With(apiCfg.MiddlewareAuth).Get("/posts", apiCfg.handlerGetPostsForUser)
 
 	router.Mount("/v1", v1Router)
 

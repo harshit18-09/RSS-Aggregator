@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"sync"
 	"time"
@@ -58,7 +59,7 @@ func scrapeFeed(dbq *db.Queries, wg *sync.WaitGroup, feed db.Feed) {
 			FeedID:      uuid.NullUUID{UUID: feed.ID, Valid: true},
 			Title:       item.Title,
 			Url:         item.Link,
-			Description: item.Description,
+			Description: sql.NullString{String: item.Description, Valid: item.Description != ""},
 			PublishedAt: t,
 		})
 		if err != nil {

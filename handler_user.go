@@ -42,4 +42,17 @@ func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) 
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
 
+func (apiCfg *apiConfig) handlerGetPostsForUser(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value(userContextKey).(db.User)
+	posts, err := apiCfg.DB.GetPostsForUser(r.Context(), db.GetPostsForUserParams{
+		UserID: user.ID,
+		Limit:  100,
+	})
+	if err != nil {
+		respondWithError(w, 500, "Failed to get posts for user")
+		return
+	}
+	respondWithJSON(w, 200, databasePostToPosts(posts))
+}
+
 //go build ; ./RSS-Aggregator
