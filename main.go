@@ -66,6 +66,10 @@ func main() {
 		user := r.Context().Value(userContextKey).(db.User)
 		apiCfg.handlerCreateFeedFollow(w, r, user)
 	})
+	v1Router.With(apiCfg.MiddlewareAuth).Get("/feed_follows", func(w http.ResponseWriter, r *http.Request) {
+		user := r.Context().Value(userContextKey).(db.User)
+		apiCfg.handlerGetFeedFollows(w, r, user)
+	})
 
 	router.Mount("/v1", v1Router)
 
