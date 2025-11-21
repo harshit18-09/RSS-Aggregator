@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -20,6 +22,12 @@ type apiConfig struct {
 }
 
 func main() {
+	// feed, err := urlToFeed("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml") //just for example to see if rss fetching is working
+	// if err != nil {
+	// 	log.Fatal("cannot get feed:", err)
+	// }
+	// fmt.Println("Feed Title:", feed.Channel.Title)
+
 	godotenv.Load(".env")
 
 	portString := os.Getenv("PORT")
@@ -82,6 +90,21 @@ func main() {
 		Addr:    ":" + portString,
 	}
 
+	// start scraper in background and it will wait until all comes
+	concurrency := 5
+	if v := os.Getenv("SCRAPER_CONCURRENCY"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			concurrency = n
+		}
+	}
+	intervalMinutes := 10
+	if v := os.Getenv("SCRAPER_INTERVAL_MINUTES"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			intervalMinutes = n
+		}
+	}
+	go startscraping(apiCfg.DB, concurrency, time.Duration(intervalMinutes)*time.Minute)
+
 	log.Printf("Server starting on port %v", portString)
 	err = srv.ListenAndServe()
 	if err != nil {
@@ -92,4 +115,3 @@ func main() {
 }
 
 //json rest api used
-//7:28:04
