@@ -70,6 +70,10 @@ func main() {
 		user := r.Context().Value(userContextKey).(db.User)
 		apiCfg.handlerGetFeedFollows(w, r, user)
 	})
+	v1Router.With(apiCfg.MiddlewareAuth).Delete("/feed_follows/{feedFollowID}", func(w http.ResponseWriter, r *http.Request) {
+		user := r.Context().Value(userContextKey).(db.User)
+		apiCfg.handlerDeleteFeedFollows(w, r, user)
+	})
 
 	router.Mount("/v1", v1Router)
 
