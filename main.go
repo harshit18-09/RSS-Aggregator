@@ -61,6 +61,7 @@ func main() {
 		user := r.Context().Value(userContextKey).(db.User)
 		apiCfg.handlerCreateFeed(w, r, user)
 	})
+	v1Router.Get("/feeds", apiCfg.handlerGetFeeds)
 
 	router.Mount("/v1", v1Router)
 
